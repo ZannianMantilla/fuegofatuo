@@ -16,6 +16,33 @@ function rafThrottle(fn) {
   };
 }
 
+/* ── 0. PRELOADER ─────────────────────────────────────────── */
+(function initPreloader() {
+  const loader = document.getElementById('preloader');
+  if (!loader) return;
+
+  // Mínimo visual: al menos 2.8 s para que se vea la animación completa
+  const MIN_MS   = 2800;
+  const start    = Date.now();
+
+  function dismiss() {
+    const elapsed = Date.now() - start;
+    const delay   = Math.max(0, MIN_MS - elapsed);
+    setTimeout(() => {
+      loader.classList.add('hidden');
+      // Eliminar del DOM tras la transición para no bloquear eventos
+      loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+    }, delay);
+  }
+
+  // Esperar a que carguen todos los recursos
+  if (document.readyState === 'complete') {
+    dismiss();
+  } else {
+    window.addEventListener('load', dismiss, { once: true });
+  }
+})();
+
 /* ── 1. CUSTOM CURSOR ─────────────────────────────────────── */
 /*
   OPTIMIZACIÓN CLAVE: usar transform en lugar de left/top.
