@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fuego Fatuo — Brujos del Sendero</title>
+  <meta name="description" content="Fuego Fatuo — Brujos, Ocultistas. Rituales, lecturas de cartas, protección y magia del Sendero de la Mano Izquierda.">
+  <!-- Favicon -->
+  <link rel="icon"         type="image/png" href="media\logo.png">
+  <link rel="shortcut icon"                 href="media\logo.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Font Awesome para íconos (botón flotante y redes sociales) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+
+<!-- ── CURSOR ──────────────────────────────────────────────── -->
+<div class="cursor"      id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── PARTICLES ───────────────────────────────────────────── -->
+<div class="particles" id="particles"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     NAVIGATION
+     ══════════════════════════════════════════════════════════ -->
+<nav class="nav" id="mainNav">
+  <a href="#inicio" class="nav-logo">
+    <img src="media\logo.png" alt="Fuego Fatuo" class="nav-logo-img">
+    Fuego <span>Fatuo</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#sobre-mi">Los Brujos</a></li>
+    <li><a href="#servicios">Rituales</a></li>
+    <li><a href="#portafolio">Portafolio</a></li>
+    <li><a href="#testimonios">Testimonios</a></li>
+  </ul>
+
+  <a href="#contacto" class="nav-cta">Consultar</a>
+
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Drawer -->
+<div class="nav-overlay" id="navOverlay"></div>
+<nav class="nav-drawer" id="navDrawer">
+  <a href="#sobre-mi">Los Brujos</a>
+  <a href="#servicios">Rituales</a>
+  <a href="#portafolio">Portafolio</a>
+  <a href="#testimonios">Testimonios</a>
+  <a href="#contacto">Consultar</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════════════════════ -->
+<section id="inicio">
+
+  <!-- Sigils de fondo -->
+  <svg class="hero-sigil" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="250" cy="250" r="240" stroke="#ff5e00" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="195" stroke="#e8a020" stroke-width="0.3"/>
+    <circle cx="250" cy="250" r="150" stroke="#ff5e00" stroke-width="0.4"/>
+    <polygon points="250,30 467,332 100,168 400,168 33,332" fill="none" stroke="#ff5e00" stroke-width="0.8"/>
+    <circle cx="250" cy="11"  r="4" fill="#ff5e00"/>
+    <circle cx="467" cy="332" r="4" fill="#ff5e00"/>
+    <circle cx="100" cy="168" r="4" fill="#ff5e00"/>
+    <circle cx="400" cy="168" r="4" fill="#ff5e00"/>
+    <circle cx="33"  cy="332" r="4" fill="#ff5e00"/>
+    <line x1="250" y1="10" x2="250" y2="490" stroke="#e8a020" stroke-width="0.3" stroke-dasharray="4 8"/>
+    <line x1="10"  y1="250" x2="490" y2="250" stroke="#e8a020" stroke-width="0.3" stroke-dasharray="4 8"/>
+    <circle cx="250" cy="250" r="8" stroke="#e8a020" stroke-width="0.5"/>
+  </svg>
+
+  <svg class="hero-sigil-inner" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="150" cy="150" r="138" stroke="#e8a020" stroke-width="0.5" stroke-dasharray="6 4"/>
+    <circle cx="150" cy="150" r="98"  stroke="#ff5e00" stroke-width="0.4"/>
+    <polygon points="150,30 250,200 50,200" fill="none" stroke="#ff5e00" stroke-width="0.6"/>
+    <polygon points="150,270 50,100 250,100" fill="none" stroke="#e8a020" stroke-width="0.6"/>
+  </svg>
+
+  <!-- Contenido principal -->
+  <div class="hero-content">
+    <p class="hero-eyebrow">✦ Destinados a tu bienestar ✦</p>
+
+    <h1 class="hero-name">
+      Fuego<br><em>Fatuo</em>
+    </h1>
+
+    <div class="hero-divider">
+      <span class="hero-divider-sym">🜂</span>
+    </div>
+
+    <p class="hero-subtitle">
+      Brujos · Ocultistas<br>
+      Rituales, lecturas de cartas y protección.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="#portafolio" class="btn btn-fire">Portafolio</a>
+      <a href="#contacto"   class="btn btn-ghost">Solicitar Consulta</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Desciende</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     VELAS DECORATIVAS
+     ══════════════════════════════════════════════════════════ -->
+<div class="candles-row" aria-hidden="true">
+  <div class="candle"><div class="flame"></div><div class="candle-body"></div><div class="candle-wax"></div></div>
+  <div class="candle"><div class="flame"></div><div class="candle-body"></div><div class="candle-wax"></div></div>
+  <div class="candle"><div class="flame"></div><div class="candle-body"></div><div class="candle-wax"></div></div>
+  <div class="candle"><div class="flame"></div><div class="candle-body"></div><div class="candle-wax"></div></div>
+  <div class="candle"><div class="flame"></div><div class="candle-body"></div><div class="candle-wax"></div></div>
+</div>
+<div class="deco-rule"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SOBRE NOSOTROS — DOS PERFILES
+     ══════════════════════════════════════════════════════════ -->
+<section id="sobre-mi">
+
+  <div class="section-header">
+    <p class="section-tag reveal">✦ Nos preparamos para ayudar a los demás.</p>
+    <h2 class="section-title reveal reveal-delay-1">Los<br>Brujos</h2>
+    <div class="section-rule reveal reveal-delay-2"></div>
+    <p class="section-sub reveal reveal-delay-2">Dos senderos, una misma llama oscura</p>
+  </div>
+
+  <!-- ── BRUJO 1 ──────────────────────────────────────────── -->
+  <div class="brujo-block reveal">
+    <div class="brujo-image-wrap">
+      <!--
+        FOTO BRUJO 1 → cambia el src por la ruta de tu imagen.
+        Ejemplo: src="media/brujo1.jpg"
+        Si dejas src="" se mostrará el placeholder automáticamente.
+      -->
+      <div class="about-image">
+        <img src="media\zannian.jpg"
+             alt="Marqués Zaninas"
+             class="brujo-photo brujo-photo--1"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="about-image-placeholder">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="50" cy="34" r="18" stroke="#ff8c00" stroke-width="0.8"/>
+            <path d="M20 85 Q30 60 50 58 Q70 60 80 85" stroke="#ff8c00" stroke-width="0.8" fill="none"/>
+            <circle cx="50" cy="50" r="45" stroke="#ff5e00" stroke-width="0.4" stroke-dasharray="3 4"/>
+            <polygon points="50,5 85,75 15,75" fill="none" stroke="rgba(255,94,0,0.28)" stroke-width="0.5"/>
+          </svg>
+          Tu Fotografía<br>aquí
+        </div>
+      </div>
+      <div class="about-accent"></div>
+      <div class="brujo-badge-role">Pitóniso</div>
+    </div>
+
+    <div class="about-text">
+      <p class="section-tag">✦ Especializado en el sendero izquierdo</p>
+      <h3 class="brujo-name-title">Marqués<br><em>Zaninas</em></h3>
+      <div class="brujo-rule brujo-rule--ember"></div>
+
+      <div class="about-desc">
+        <p>Con más de 2 años de experiencia adquiriendo conocimiento <strong>desde la teoría llevada a la praxis,</strong> su práctica se basa en el satanismo teísta enfocado en la energía del usuario, la demonología goética y la filosofía luciferina.</p>
+        <p>Su trabajo está anclado en la <strong>tradición y la disciplina.</strong> Cada ritual, cada lectura, cada trabajo es diseñado con precisión para el solicitante.</p>
+        <p>El <strong>Sendero de la Mano Izquierda</strong> es para quienes se atreven a romper con el rebaño y abrazar su oscuridad interior sin miedo ni disculpas.</p>
+      </div>
+
+      <div class="about-stats">
+        <div class="stat">
+          <span class="stat-num">2+</span>
+          <span class="stat-label">Años de práctica</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Comprometido</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">+10</span>
+          <span class="stat-label">Clientes satisfechos</span>
+        </div>
+      </div>
+
+      <div class="brujo-specialties">
+        <span class="brujo-tag">Demonología Goética</span>
+        <span class="brujo-tag">Satanismo Teísta</span>
+        <span class="brujo-tag">Filosofía Luciferina</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="brujo-separator" aria-hidden="true">
+    <span class="brujo-sep-sym">⸸</span>
+  </div>
+
+  <!-- ── BRUJO 2 ──────────────────────────────────────────── -->
+  <div class="brujo-block brujo-block--reversed reveal reveal-delay-1">
+    <div class="brujo-image-wrap">
+      <!--
+        FOTO BRUJO 2 → cambia el src por la ruta de tu imagen.
+        Ejemplo: src="media/brujo2.jpg"
+        Si dejas src="" se mostrará el placeholder automáticamente.
+      -->
+      <div class="about-image about-image--gold">
+        <img src=""
+             alt="Segundo Brujo"
+             class="brujo-photo brujo-photo--2"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="about-image-placeholder">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="50" cy="34" r="18" stroke="#e8a020" stroke-width="0.8"/>
+            <path d="M20 85 Q30 60 50 58 Q70 60 80 85" stroke="#e8a020" stroke-width="0.8" fill="none"/>
+            <circle cx="50" cy="50" r="45" stroke="#ffb84d" stroke-width="0.4" stroke-dasharray="3 4"/>
+            <polygon points="50,5 85,75 15,75" fill="none" stroke="rgba(232,160,32,0.28)" stroke-width="0.5"/>
+            <polygon points="50,95 15,25 85,25" fill="none" stroke="rgba(232,160,32,0.18)" stroke-width="0.5"/>
+          </svg>
+          Tu Fotografía<br>aquí
+        </div>
+      </div>
+      <div class="about-accent about-accent--gold"></div>
+      <div class="brujo-badge-role brujo-badge-role--gold">Segundo Fuego</div>
+    </div>
+
+    <div class="about-text">
+      <p class="section-tag section-tag--gold">✦ Especializado en la Santa Muerte</p>
+      <h3 class="brujo-name-title brujo-name-title--gold">Nombre del<br><em>Segundo Brujo</em></h3>
+      <div class="brujo-rule brujo-rule--gold"></div>
+
+      <div class="about-desc">
+        <p>Practicante de <strong>brujería tradicional y magia ancestral,</strong> su sendero se alimenta del conocimiento transmitido a través de generaciones, combinado con el estudio profundo de la magia caótica y los sistemas mágicos premodernos.</p>
+        <p>Su especialidad abarca los <strong>trabajos con fuerzas astrales,</strong> la comunicación con entidades del umbral y el dominio de los sigilos de poder con intención precisa.</p>
+        <p>Cada trabajo es un <strong>acto de voluntad pura</strong> — sin dogmas, sin intermediarios innecesarios, solo el poder de quien lo busca canalizado a través del rito.</p>
+      </div>
+
+      <div class="about-stats about-stats--gold">
+        <div class="stat">
+          <span class="stat-num stat-num--gold">3+</span>
+          <span class="stat-label">Años de práctica</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num stat-num--gold">∞</span>
+          <span class="stat-label">Dedicación total</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num stat-num--gold">+15</span>
+          <span class="stat-label">Trabajos realizados</span>
+        </div>
+      </div>
+
+      <div class="brujo-specialties">
+        <span class="brujo-tag brujo-tag--gold">Magia Ancestral</span>
+        <span class="brujo-tag brujo-tag--gold">Brujería Tradicional</span>
+        <span class="brujo-tag brujo-tag--gold">Sigilos de Poder</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="deco-rule"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SERVICIOS
+     ══════════════════════════════════════════════════════════ -->
+<section id="servicios">
+  <div class="section-header">
+    <p class="section-tag reveal">✦ Conoces nuestros</p>
+    <h2 class="section-title reveal reveal-delay-1">Trabajos &amp; Servicios</h2>
+    <div class="section-rule reveal reveal-delay-2"></div>
+    <p class="section-sub reveal reveal-delay-2">Cada servicio es atendido según sea la intención</p>
+  </div>
+
+  <div class="services-grid">
+
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <svg class="service-icon-wrap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><path d="M12 2 L12 22 M2 12 L22 12"/>
+        <polygon points="12,2 20,18 4,18" fill="none"/>
+      </svg>
+      <h3 class="service-name">Contacto con entidades</h3>
+      <p class="service-desc">Convocación de entidades, trabajos con la Goecia, pactos y alianzas con poderes infernales según tu propósito específico.</p>
+      <span class="service-badge">Alta Magia</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">02</div>
+      <svg class="service-icon-wrap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        <path d="M12 1 L12 23 M1 12 L23 12"/>
+      </svg>
+      <h3 class="service-name">Lecturas De Cartas</h3>
+      <p class="service-desc">Lectura del Tarot, recibe orientación clara sobre tus decisiones. haciendo uso de un guía durante la sesión.</p>
+      <span class="service-badge">Adivinación</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">03</div>
+      <svg class="service-icon-wrap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+      <h3 class="service-name">Trabajos de Protección</h3>
+      <p class="service-desc">Limpieza de ataques, reversión de trabajos, sellado de males y creación de sigilos de protección.</p>
+      <span class="service-badge">Magia Defensiva</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-num">04</div>
+      <svg class="service-icon-wrap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <h3 class="service-name">Amarres &amp; Vínculos</h3>
+      <p class="service-desc">Rituales de vínculo energético, dominio y sujeción con o sin la participación del objetivo. Magia sexual y trabajos de atracción intensa.</p>
+      <span class="service-badge">Magia roja</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-4">
+      <div class="service-num">05</div>
+      <svg class="service-icon-wrap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      <h3 class="service-name">Activación de Sigilos</h3>
+      <p class="service-desc">
+        Activación energética de sigilos junto a una explicación clara de su función, propósito y forma de uso.
+</p>
+<span class="service-badge">Aprendizaje</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-5">
+      <div class="service-num">06</div>
+      <svg class="service-icon-wrap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+      </svg>
+      <h3 class="service-name">Mentoría Ocultista</h3>
+      <p class="service-desc">Guía personalizada en el estudio del ocultismo, iniciación en el conocimiento de lo astral, crecimiento personal y desarrollo espiritual.</p>
+      <span class="service-badge">Camino de Iniciación</span>
+    </div>
+
+  </div>
+</section>
+
+<div class="deco-rule"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PORTAFOLIO
+     ══════════════════════════════════════════════════════════ -->
+<section id="portafolio">
+  <div class="section-header">
+    <p class="section-tag reveal">✦ Nuestras experiencias</p>
+    <h2 class="section-title reveal reveal-delay-1">Portafolio</h2>
+    <div class="section-rule reveal reveal-delay-2"></div>
+    <p class="section-sub reveal reveal-delay-2">Evidencias de rituales, lecturas y trabajos realizados hasta el día de hoy.</p>
+  </div>
+
+  <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║  CÓMO AGREGAR TUS IMÁGENES O VIDEOS                     ║
+    ║  · Imagen : data-img="media/foto.jpg"                   ║
+    ║  · Video  : data-video="media/video.mp4"                ║
+    ║  Si data-video está lleno, el video tiene prioridad.    ║
+    ║  La imagen / video se ven directamente en la tarjeta.   ║
+    ║  Al hacer clic se abre en pantalla completa.            ║
+    ╚══════════════════════════════════════════════════════════╝
+  -->
+  <div class="portfolio-grid">
+
+    <!-- ÍTEM 1 — grande (ocupa 2 filas) -->
+    <div class="portfolio-item pg1 reveal"
+         data-img=""
+         data-video="media\marchosias.mp4">
+      <div class="portfolio-bg"></div>
+      <video class="portfolio-video" muted loop playsinline></video>
+      <div class="portfolio-overlay"></div>
+      <span class="portfolio-media-badge portfolio-media-badge--video">▶ Video</span>
+      <span class="portfolio-media-badge portfolio-media-badge--image">⬛ Imagen</span>
+      <div class="portfolio-info">
+        <p class="portfolio-cat">Contacto con entidades</p>
+        <h3 class="portfolio-title">Presencia de Marchosias</h3>
+        <span class="portfolio-link">Ver más →</span>
+      </div>
+    </div>
+
+    <!-- ÍTEM 2 -->
+    <div class="portfolio-item pg2 reveal reveal-delay-1"
+         data-img="media/1.PNG"
+         data-video="">
+      <div class="portfolio-bg"></div>
+      <video class="portfolio-video" muted loop playsinline></video>
+      <div class="portfolio-overlay"></div>
+      <span class="portfolio-media-badge portfolio-media-badge--video">▶ Video</span>
+      <span class="portfolio-media-badge portfolio-media-badge--image">⬛ Imagen</span>
+      <div class="portfolio-info">
+        <p class="portfolio-cat">Trabajo de salud</p>
+        <h3 class="portfolio-title">Ritual de curacion</h3>
+        <span class="portfolio-link">Ver más →</span>
+      </div>
+    </div>
+
+    <!-- ÍTEM 3 -->
+    <div class="portfolio-item pg3 reveal reveal-delay-2"
+         data-img="media/2.PNG"
+         data-video="">
+      <div class="portfolio-bg"></div>
+      <video class="portfolio-video" muted loop playsinline></video>
+      <div class="portfolio-overlay"></div>
+      <span class="portfolio-media-badge portfolio-media-badge--video">▶ Video</span>
+      <span class="portfolio-media-badge portfolio-media-badge--image">⬛ Imagen</span>
+      <div class="portfolio-info">
+        <p class="portfolio-cat">Endulzamiento</p>
+        <h3 class="portfolio-title">Calma en una relacion</h3>
+        <span class="portfolio-link">Ver más →</span>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <!-- ── LIGHTBOX ──────────────────────────────────────────── -->
+  <div class="pf-lightbox" id="pfLightbox" aria-hidden="true">
+    <button class="pf-lightbox-close" id="pfClose" aria-label="Cerrar">✕</button>
+    <div class="pf-lightbox-inner">
+      <img   class="pf-lb-img"   id="pfLbImg"   src="" alt="">
+      <video class="pf-lb-video" id="pfLbVideo" src="" controls playsinline></video>
+    </div>
+    <div class="pf-lb-caption" id="pfLbCaption"></div>
+  </div>
+</section>
+
+<div class="deco-rule"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TESTIMONIOS
+     ══════════════════════════════════════════════════════════ -->
+<section id="testimonios">
+  <div class="section-header">
+    <p class="section-tag reveal">✦ Nuestros clientes</p>
+    <h2 class="section-title reveal reveal-delay-1">Experencias</h2>
+    <div class="section-rule reveal reveal-delay-2"></div>
+    <p class="section-sub reveal reveal-delay-2">Testimonios de quienes confiaron en nosotros</p>
+  </div>
+
+  <div class="testimonials-grid">
+
+    <div class="testimonial reveal">
+      <div class="test-stars">Limpia por medio de objeto maldito.</div>
+      <p class="test-text">Se realizó una limpia con la intención de remover su mala fortuna mediante el uso de un objeto. Una vez realizada, en cuestión de horas recibió un pago económico que tenía pendiente desde hacía bastante tiempo.
+</p>
+      <div class="test-author">
+        <div class="test-avatar">W.O</div>
+        <div>
+          <span class="test-name">William O.</span>
+          <span class="test-loc">Giron, Colombia</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial reveal reveal-delay-2">
+      <div class="test-stars">Lectura del Tarot</div>
+      <p class="test-text">Fue realizada una lectura de tarot privada eficiente donde fue advertido de un accidente automovilístico semanas antes de que le ocurriera.</p>
+      <div class="test-author">
+        <div class="test-avatar">D.P</div>
+        <div>
+          <span class="test-name">David A.</span>
+          <span class="test-loc">Bucaramanga, Colombia</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial reveal reveal-delay-3">
+      <div class="test-stars">Lectura del Tarot</div>
+      <p class="test-text">Fue realizada una lectura de tarot privada eficiente donde fue advertido de un accidente automovilístico referente a su bicicleta, el cual ocurrió un mes después, y solucionar temas referentes a una persona cercana a él.</p>
+      <div class="test-author">
+        <div class="test-avatar">J.M</div>
+        <div>
+          <span class="test-name">Jaider M.</span>
+          <span class="test-loc">Giron, Colombia</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial reveal reveal-delay-1">
+      <div class="test-stars">Endulzamiento</div>
+      <p class="test-text">Se realizaron dos endulzamientos para facilitar la comunicación con una persona que se encontraba acomplejada.</p>
+      <div class="test-author">
+        <div class="test-avatar">J.L</div>
+        <div>
+          <span class="test-name">Juan P.</span>
+          <span class="test-loc">Bucaramanga, Colombia</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial reveal reveal-delay-3">
+      <div class="test-stars">Accidente automovilístico</div>
+      <p class="test-text">Se le realizó un trabajo para causar un accidente automovilístico a un enemigo en el ámbito laboral, el cual fue efectivo pasados los 2 días.</p>
+      <div class="test-author">
+        <div class="test-avatar">A</div>
+        <div>
+          <span class="test-name">Anonimo</span>
+          <span class="test-loc">Bucaramanga, Colombia</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial reveal reveal-delay-4">
+      <div class="test-stars">Limpia por medio de objeto maldito.</div>
+      <p class="test-text">Se limpió la energía de dos personas junto a la de la casa, esto por medio de un objeto y el humo de un cigarrillo; los clientes remarcaron sentir alivio al momento de realizar el ritual.</p>
+      <div class="test-author">
+        <div class="test-avatar">J.L</div>
+        <div>
+          <span class="test-name">Juan L.</span>
+          <span class="test-loc">Bucaramanga, Colombia</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="deco-rule"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CONTACTO — SOLO REDES SOCIALES
+     ══════════════════════════════════════════════════════════ -->
+<section id="contacto">
+
+  <div class="section-header">
+    <p class="section-tag reveal">✦ ¿Dónde encontrarnos?</p>
+    <h2 class="section-title reveal reveal-delay-1">Conecta<br>con Nosotros</h2>
+    <div class="section-rule reveal reveal-delay-2"></div>
+    <p class="section-sub reveal reveal-delay-2">
+      Cada consulta comienza con una conversación honesta.<br>No juzgamos, no moralizamos. El poder es tuyo; nosotros somos el puente.
+    </p>
+  </div>
+
+  <!-- Elemento dinámico: Rotador de intenciones -->
+  <div class="contact-rotator reveal reveal-delay-2">
+    <span class="rotator-prefix">¿Buscas</span>
+    <span class="rotator-text" id="rotatorText">protección?</span>
+  </div>
+
+  <!-- Indicador de disponibilidad -->
+  <div class="contact-availability reveal reveal-delay-3">
+    <span class="avail-dot"></span>
+    <span class="avail-label">Disponibles ahora · Respuesta en menos de 24 h</span>
+  </div>
+
+  <!-- Cards de redes sociales -->
+  <div class="social-contact-grid">
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/573246033634" target="_blank" rel="noopener" class="social-contact-card scc-wsp reveal">
+      <div class="scc-glow scc-glow--wsp"></div>
+      <div class="scc-icon-wrap">
+        <i class="fab fa-whatsapp scc-icon"></i>
+      </div>
+      <div class="scc-body">
+        <h3 class="scc-title">WhatsApp</h3>
+        <p class="scc-handle">+57 324 603 3634</p>
+        <p class="scc-desc">Consultas directas y atención personalizada. Canal más rápido.</p>
+      </div>
+      <span class="scc-cta">Escribir ahora <i class="fas fa-arrow-right"></i></span>
+      <div class="scc-badge">Preferido</div>
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/fuegofatuo.oficial/" target="_blank" rel="noopener" class="social-contact-card scc-ig reveal reveal-delay-1">
+      <div class="scc-glow scc-glow--ig"></div>
+      <div class="scc-icon-wrap">
+        <i class="fab fa-instagram scc-icon"></i>
+      </div>
+      <div class="scc-body">
+        <h3 class="scc-title">Instagram</h3>
+        <p class="scc-handle">@fuegofatuo.oficial</p>
+        <p class="scc-desc">Portafolio visual, rituales documentados y contenido.</p>
+      </div>
+      <span class="scc-cta">Seguir <i class="fas fa-arrow-right"></i></span>
+    </a>
+
+    <!-- TikTok -->
+    <a href="https://www.tiktok.com/@fuegofatuo.oficial" target="_blank" rel="noopener" class="social-contact-card scc-tt reveal reveal-delay-2">
+      <div class="scc-glow scc-glow--tt"></div>
+      <div class="scc-icon-wrap">
+        <i class="fab fa-tiktok scc-icon"></i>
+      </div>
+      <div class="scc-body">
+        <h3 class="scc-title">TikTok</h3>
+        <p class="scc-handle">@fuegofatuo.oficial</p>
+        <p class="scc-desc">Contenido y enseñanzas ocultistas.</p>
+      </div>
+      <span class="scc-cta">Ver contenido <i class="fas fa-arrow-right"></i></span>
+    </a>
+
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     FOOTER
+     ══════════════════════════════════════════════════════════ -->
+<div class="deco-rule"></div>
+<footer>
+  <div class="footer-brand">
+    <img src="media\logo.png" alt="Fuego Fatuo" class="footer-logo-img"> Fuego Fatuo
+  </div>
+
+  <div class="footer-right">
+    <div class="social-row">
+      <a href="https://wa.me/573246033634" target="_blank" class="social-btn" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+      <a href="https://www.instagram.com/fuegofatuo.oficial/" target="_blank" class="social-btn" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.tiktok.com/@fuegofatuo.oficial" target="_blank" class="social-btn" aria-label="TikTok">
+        <i class="fab fa-tiktok"></i>
+      </a>
+    </div>
+    <p class="footer-copy">© 2026 Fuego Fatuo — Todos los derechos reservados</p>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════
+     BOTÓN FLOTANTE WHATSAPP (Font Awesome)
+     ══════════════════════════════════════════════════════════ -->
+<a href="https://wa.me/573246033634"
+   target="_blank"
+   rel="noopener"
+   class="float-wsp"
+   aria-label="Contactar por WhatsApp">
+  <i class="fab fa-whatsapp float-wsp-icon"></i>
+  <span class="float-wsp-tooltip">¡Escríbenos!</span>
+</a>
+
+<!-- ── SCRIPTS ──────────────────────────────────────────────── -->
+<script src="js/main.js"></script>
+</body>
+</html>
