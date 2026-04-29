@@ -8,22 +8,21 @@
 
 /* ── TOKENS ───────────────────────────────────────────────── */
 :root {
-  /* Paleta levantada: menos negra, más cálida y legible */
-  --coal:      #19140e;
-  --deep:      #221b13;
-  --char:      #2e2418;
-  --ember:     #ff6a10;
-  --ember-dim: #d44e00;
-  --blaze:     #ff9a20;
-  --amber:     #ffc060;
-  --gold:      #f0b030;
-  --smoke:     #d4c5ad;
-  --ash:       #a89480;
-  --bone:      #f5efe0;
-  --white-fog: #fdf9f2;
-  --glow-e:    rgba(255,106,16,0.40);
-  --glow-a:    rgba(240,176,48,0.28);
-  --shadow:    rgba(0,0,0,0.75);
+  --coal:      #0a0805;
+  --deep:      #120e09;
+  --char:      #1e1610;
+  --ember:     #ff5e00;
+  --ember-dim: #c44200;
+  --blaze:     #ff8c00;
+  --amber:     #ffb84d;
+  --gold:      #e8a020;
+  --smoke:     #c5b49a;
+  --ash:       #8a7a68;
+  --bone:      #f2ead8;
+  --white-fog: #faf7f0;
+  --glow-e:    rgba(255,94,0,0.35);
+  --glow-a:    rgba(232,160,32,0.25);
+  --shadow:    rgba(0,0,0,0.9);
   /* Social brand colors */
   --wsp-color: #25D366;
   --ig-color:  #E1306C;
@@ -78,7 +77,108 @@ body::before {
 .cursor.hovering { width: 18px; height: 18px; }
 .cursor-ring.hovering { width: 52px; height: 52px; border-color: rgba(255,140,0,0.6); }
 
-/* ── SCROLL REVEAL ────────────────────────────────────────── */
+/* ── X CLOSE BUTTON — NAV DRAWER ─────────────────────────── */
+.nav-drawer-close {
+  display: none; /* solo visible en móvil, ver responsive */
+  position: absolute;
+  top: 20px; right: 20px;
+  background: none;
+  border: 1px solid rgba(255,94,0,0.3);
+  color: var(--ember);
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  align-items: center; justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  z-index: 10;
+}
+.nav-drawer-close:hover {
+  background: rgba(255,94,0,0.12);
+  transform: rotate(90deg);
+}
+
+/* ── BRUJO IMAGE CLICKABLE ────────────────────────────────── */
+.brujo-image-clickable {
+  cursor: pointer;
+}
+.brujo-image-clickable::after {
+  content: '\f00e'; /* fa-search-plus */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  bottom: 14px; right: 14px;
+  width: 36px; height: 36px;
+  background: rgba(10,8,5,0.75);
+  border: 1px solid rgba(255,106,16,0.4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  color: var(--ember);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 5;
+  line-height: 36px;
+  text-align: center;
+}
+.brujo-image-clickable:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── BRUJO LIGHTBOX ───────────────────────────────────────── */
+.brujo-lightbox {
+  position: fixed; inset: 0; z-index: 10001;
+  background: rgba(6,4,2,0.97);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s;
+  padding: 20px;
+}
+.brujo-lightbox.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.brujo-lb-close {
+  position: absolute; top: 20px; right: 26px;
+  background: none;
+  border: 1px solid rgba(255,106,16,0.4);
+  color: var(--ember); font-size: 1rem;
+  width: 40px; height: 40px; border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.3s, transform 0.3s;
+}
+.brujo-lb-close:hover {
+  background: rgba(255,106,16,0.15);
+  transform: rotate(90deg);
+}
+.brujo-lb-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+  max-width: min(90vw, 600px);
+}
+.brujo-lb-img {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border: 1px solid rgba(255,106,16,0.18);
+  box-shadow: 0 0 80px rgba(255,106,16,0.15);
+  display: block;
+}
+.brujo-lb-info {
+  text-align: center;
+}
+.brujo-lb-name {
+  font-family: 'Philosopher', serif;
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--bone); margin-bottom: 4px;
+}
+.brujo-lb-role {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem; letter-spacing: 0.38em;
+  color: var(--ember); text-transform: uppercase;
+}
 .reveal {
   opacity: 0;
   transform: translateY(36px);
@@ -1313,323 +1413,66 @@ footer {
 }
 
 /* ============================================================
-   PRELOADER
+   RESPONSIVE
    ============================================================ */
-#preloader {
-  position: fixed; inset: 0; z-index: 99999;
-  background: var(--coal);
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity 0.7s ease, visibility 0.7s ease;
-}
-#preloader.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.pre-inner {
-  display: flex; flex-direction: column; align-items: center; gap: 22px;
-}
-
-/* Sigilo SVG */
-.pre-sigil {
-  width: 220px; height: 220px;
-}
-
-/* Anillo exterior: gira lentamente */
-.pre-ring-outer {
-  transform-origin: 110px 110px;
-  animation: pre-spin 8s linear infinite;
-}
-
-/* Anillo medio: pulsa */
-.pre-ring-mid {
-  transform-origin: 110px 110px;
-  animation: pre-spin-rev 12s linear infinite;
-  opacity: 0.5;
-}
-
-/* Pentagrama: se dibuja */
-.pre-star {
-  fill: none;
-  stroke-dasharray: 950;
-  stroke-dashoffset: 950;
-  animation: pre-draw 2.4s cubic-bezier(0.4,0,0.2,1) 0.3s forwards,
-             pre-glow-star 2s ease 2.7s infinite;
-}
-
-/* Anillo interior: gira inverso */
-.pre-ring-inner {
-  transform-origin: 110px 110px;
-  animation: pre-spin-rev 6s linear infinite;
-}
-
-/* Punto central: aparece al final */
-.pre-dot {
-  opacity: 0;
-  animation: pre-dot-appear 0.5s ease 2.4s forwards;
-  filter: drop-shadow(0 0 6px #ff6a10);
-}
-
-/* Vértices: aparecen progresivamente */
-.pre-vertex {
-  opacity: 0;
-  animation: pre-dot-appear 0.3s ease forwards;
-  filter: drop-shadow(0 0 4px #ff6a10);
-}
-.pre-vertex:nth-child(5) { animation-delay: 0.6s; }
-.pre-vertex:nth-child(6) { animation-delay: 1.0s; }
-.pre-vertex:nth-child(7) { animation-delay: 1.4s; }
-.pre-vertex:nth-child(8) { animation-delay: 1.8s; }
-.pre-vertex:nth-child(9) { animation-delay: 2.2s; }
-
-/* Textos del preloader */
-.pre-brand {
-  font-family: 'Philosopher', serif;
-  font-size: 1.9rem; font-weight: 700; font-style: italic;
-  color: var(--bone); letter-spacing: 0.04em;
-  opacity: 0;
-  animation: fade-up 0.8s ease 1.8s forwards;
-}
-.pre-brand em { font-style: normal; color: var(--ember); }
-
-.pre-sub {
-  font-family: 'Cinzel', serif;
-  font-size: 0.58rem; letter-spacing: 0.5em;
-  text-transform: uppercase; color: var(--ash);
-  opacity: 0;
-  animation: fade-in 0.8s ease 2.2s forwards;
-}
-
-/* Puntos animados "..." */
-.pre-dots::after {
-  content: '';
-  animation: pre-ellipsis 1.5s steps(4, end) 2.5s infinite;
-}
-@keyframes pre-ellipsis {
-  0%   { content: ''; }
-  25%  { content: '.'; }
-  50%  { content: '..'; }
-  75%  { content: '...'; }
-  100% { content: ''; }
-}
-
-/* Keyframes del preloader */
-@keyframes pre-spin     { to { transform: rotate(360deg); } }
-@keyframes pre-spin-rev { to { transform: rotate(-360deg); } }
-@keyframes pre-draw {
-  to { stroke-dashoffset: 0; }
-}
-@keyframes pre-glow-star {
-  0%,100% { filter: drop-shadow(0 0 4px rgba(255,106,16,0.5)); }
-  50%     { filter: drop-shadow(0 0 12px rgba(255,106,16,0.9)); }
-}
-@keyframes pre-dot-appear {
-  from { opacity: 0; transform: scale(0); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-/* Ocultar cursor en preloader */
-#preloader * { cursor: none; }
-
-/* ============================================================
-   RESPONSIVE — TABLET GRANDE (≤ 1100px)
-   ============================================================ */
-@media (max-width: 1100px) {
+@media (max-width: 1024px) {
   .nav { padding: 18px 40px; }
-
-  #inicio { padding: 0 32px; }
-
-  #sobre-mi,
-  #servicios,
-  #portafolio,
-  #testimonios,
-  #contacto { padding: 100px 40px; }
-
-  .brujo-block { gap: 48px; }
-  .brujo-block { grid-template-columns: 0.9fr 1.4fr; }
-  .brujo-block--reversed { grid-template-columns: 1.4fr 0.9fr; }
-
-  .services-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
-
+  #sobre-mi, #servicios, #portafolio, #testimonios, #contacto { padding: 100px 40px; }
+  .brujo-block { gap: 50px; }
   .social-contact-grid { gap: 18px; }
-
-  footer { padding: 48px 40px; }
 }
 
-/* ============================================================
-   RESPONSIVE — TABLET (≤ 840px)
-   ============================================================ */
-@media (max-width: 840px) {
-  /* Cursor — ocultar en touch */
-  .cursor, .cursor-ring { display: none; }
-  body { cursor: auto; }
-  a, button, .service-card, .portfolio-item,
-  .social-contact-card, .float-wsp, .nav-cta,
-  .btn, .brujo-tag { cursor: pointer; }
-
+@media (max-width: 900px) {
   /* Nav */
   .nav { padding: 16px 24px; }
   .nav-links, .nav-cta { display: none; }
   .nav-hamburger { display: flex; }
   .nav-drawer { display: flex; }
 
-  /* Secciones */
-  #sobre-mi,
-  #servicios,
-  #portafolio,
-  #testimonios,
-  #contacto { padding: 80px 28px; }
-
-  /* Hero */
-  .hero-content { padding: 110px 20px 70px; }
-  .hero-sigil   { width: 450px; height: 450px; }
-  .hero-sigil-inner { width: 260px; height: 260px; }
-  .hero-ctas { flex-direction: column; align-items: center; }
-  .btn { width: 100%; max-width: 280px; text-align: center; }
-
-  /* Velas */
-  .candles-row { gap: 28px; }
-
-  /* Brujos — pasan a columna */
-  .brujo-block,
-  .brujo-block--reversed {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-  .brujo-block--reversed .brujo-image-wrap { order: 0; }
-  .brujo-block--reversed .about-text       { order: 0; }
-  /* Foto del brujo: más pequeña, horizontal */
-  .about-image {
-    aspect-ratio: 4/3;
-    max-height: 280px;
-  }
-  .about-stats { margin-top: 24px; }
-  .stat { padding: 16px 10px; }
-  .stat-num { font-size: 1.7rem; }
-
-  /* Servicios: 2 columnas en tablet */
-  .services-grid { grid-template-columns: repeat(2, 1fr); }
-  .service-card { padding: 36px 26px; }
-
-  /* Portfolio */
-  .portfolio-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3px;
-  }
-  .portfolio-item { grid-column: span 1 !important; grid-row: span 1 !important; min-height: 200px; }
-  .portfolio-item:nth-child(1) { grid-column: span 2 !important; min-height: 280px; }
-
-  /* Testimonios: 1 columna */
-  .testimonials-grid { grid-template-columns: 1fr; gap: 18px; }
-
-  /* Contacto */
-  .social-contact-grid { grid-template-columns: 1fr; max-width: 480px; }
-  .contact-rotator { font-size: 1.15rem; }
-  .social-contact-card { padding: 36px 28px; }
-
-  /* Footer */
-  footer {
-    padding: 40px 24px;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
-  .footer-motto { display: none; } /* evita desorden en tablet */
-  .footer-right { align-items: center; }
-
-  /* Botón flotante */
-  .float-wsp { bottom: 22px; right: 22px; width: 58px; height: 58px; }
-  .float-wsp-tooltip { display: none; }
-}
-
-/* ============================================================
-   RESPONSIVE — MÓVIL (≤ 520px)
-   ============================================================ */
-@media (max-width: 520px) {
   /* Sections */
-  #sobre-mi,
-  #servicios,
-  #portafolio,
-  #testimonios,
-  #contacto { padding: 64px 16px; }
-
-  /* Hero */
-  .hero-content { padding: 100px 16px 60px; }
-  .hero-eyebrow { font-size: 0.55rem; letter-spacing: 0.4em; margin-bottom: 18px; }
-  .hero-divider { margin: 20px auto; }
-  .hero-subtitle { font-size: 0.95rem; margin-bottom: 36px; }
-
-  /* Velas: ocultar 2 extremos, quedan 3 */
-  .candle:first-child,
-  .candle:last-child { display: none; }
-  .candles-row { gap: 22px; }
+  #sobre-mi, #servicios, #portafolio, #testimonios, #contacto { padding: 80px 24px; }
 
   /* Brujos */
-  .about-image { aspect-ratio: 3/2; max-height: 220px; }
-  .brujo-name-title { font-size: 1.6rem; }
-  .brujo-block { margin-bottom: 50px; }
-  .about-stats { grid-template-columns: repeat(3,1fr); }
-  .stat-num { font-size: 1.5rem; }
-  .stat-label { font-size: 0.5rem; letter-spacing: 0.15em; }
-  .brujo-separator { margin-bottom: 50px; }
-  .brujo-sep-sym { font-size: 1.4rem; }
+  .brujo-block { grid-template-columns: 1fr; gap: 32px; }
+  .brujo-block--reversed { grid-template-columns: 1fr; }
+  .brujo-block--reversed .brujo-image-wrap { order: 0; }
+  .brujo-block--reversed .about-text     { order: 0; }
+  /* IMÁGENES BRUJOS: visible y completa en móvil */
+  .about-image {
+    aspect-ratio: 3/4;
+    max-height: none;
+    width: 100%;
+  }
 
-  /* Sección headers */
-  .section-title { font-size: 1.8rem; }
-  .section-sub { font-size: 0.9rem; }
+  /* X del drawer visible */
+  .nav-drawer-close { display: flex; }
 
-  /* Servicios: 1 columna */
+  /* Services */
   .services-grid { grid-template-columns: 1fr; }
-  .service-card { padding: 30px 22px; }
-  .service-num { font-size: 3rem; }
 
-  /* Portfolio: 1 columna */
+  /* Portfolio */
   .portfolio-grid { grid-template-columns: 1fr; }
-  .portfolio-item { grid-column: span 1 !important; grid-row: span 1 !important; min-height: 190px; }
-  .portfolio-item:nth-child(1) { grid-column: span 1 !important; min-height: 240px; }
+  .portfolio-item { grid-column: span 1 !important; grid-row: span 1 !important; min-height: 220px; }
+  .portfolio-item:nth-child(1) { min-height: 300px; }
 
-  /* Testimonios */
-  .testimonial { padding: 28px 22px; }
-  .test-text { font-size: 0.92rem; }
+  /* Testimonials */
+  .testimonials-grid { grid-template-columns: 1fr; }
 
-  /* Contacto */
-  .contact-rotator { flex-direction: column; height: auto; gap: 4px; text-align: center; font-size: 1.05rem; }
-  .contact-availability { font-size: 0.52rem; text-align: center; }
-  .social-contact-card { padding: 30px 20px; }
-  .scc-icon-wrap { width: 60px; height: 60px; }
-  .scc-icon { font-size: 1.6rem; }
-  .scc-title { font-size: 0.95rem; }
-  .scc-desc { font-size: 0.82rem; }
-  .scc-cta { font-size: 0.55rem; padding: 9px 18px; }
+  /* Contact */
+  .social-contact-grid { grid-template-columns: 1fr; }
+  .contact-rotator { font-size: 1.2rem; }
 
-  /* Nav drawer */
-  .nav-drawer { width: 100%; }
+  /* Hero */
+  .hero-name { font-size: 2.8rem; }
 
   /* Footer */
-  footer { padding: 32px 16px; gap: 18px; }
-  .footer-brand { font-size: 1rem; }
+  footer { padding: 40px 24px; flex-direction: column; text-align: center; align-items: center; }
+  .footer-right { align-items: center; }
+  .candles-row { gap: 30px; }
 
-  /* Float WhatsApp */
-  .float-wsp { bottom: 16px; right: 16px; width: 52px; height: 52px; }
-  .float-wsp-icon { font-size: 1.6rem; }
-
-  /* Preloader en móvil */
-  .pre-sigil { width: 170px; height: 170px; }
-  .pre-brand { font-size: 1.4rem; }
-}
-
-/* ============================================================
-   RESPONSIVE — MÓVIL PEQUEÑO (≤ 360px)
-   ============================================================ */
-@media (max-width: 360px) {
-  .hero-content { padding: 90px 12px 50px; }
-  #sobre-mi, #servicios, #portafolio, #testimonios, #contacto { padding: 56px 12px; }
-  .stat-num { font-size: 1.3rem; }
-  .pre-sigil { width: 140px; height: 140px; }
-  .pre-brand { font-size: 1.2rem; }
+  /* Float button on mobile */
+  .float-wsp { bottom: 20px; right: 20px; width: 56px; height: 56px; }
+  .float-wsp-tooltip { display: none; }
 }
 /* ============================================================
    LOGO NAV / FOOTER
@@ -1756,3 +1599,123 @@ footer {
   color: #8a7a68; text-align: center;
   text-transform: uppercase;
 }
+
+/* ============================================================
+   PRELOADER
+   ============================================================ */
+#preloader {
+  position: fixed; inset: 0; z-index: 99999;
+  background: var(--coal);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
+}
+#preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.pre-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 22px;
+}
+
+/* Sigilo SVG */
+.pre-sigil {
+  width: 220px; height: 220px;
+}
+
+/* Anillo exterior: gira lentamente */
+.pre-ring-outer {
+  transform-origin: 110px 110px;
+  animation: pre-spin 8s linear infinite;
+}
+
+/* Anillo medio: pulsa */
+.pre-ring-mid {
+  transform-origin: 110px 110px;
+  animation: pre-spin-rev 12s linear infinite;
+  opacity: 0.5;
+}
+
+/* Pentagrama: se dibuja */
+.pre-star {
+  fill: none;
+  stroke-dasharray: 950;
+  stroke-dashoffset: 950;
+  animation: pre-draw 2.4s cubic-bezier(0.4,0,0.2,1) 0.3s forwards,
+             pre-glow-star 2s ease 2.7s infinite;
+}
+
+/* Anillo interior: gira inverso */
+.pre-ring-inner {
+  transform-origin: 110px 110px;
+  animation: pre-spin-rev 6s linear infinite;
+}
+
+/* Punto central: aparece al final */
+.pre-dot {
+  opacity: 0;
+  animation: pre-dot-appear 0.5s ease 2.4s forwards;
+  filter: drop-shadow(0 0 6px #ff6a10);
+}
+
+/* Vértices: aparecen progresivamente */
+.pre-vertex {
+  opacity: 0;
+  animation: pre-dot-appear 0.3s ease forwards;
+  filter: drop-shadow(0 0 4px #ff6a10);
+}
+.pre-vertex:nth-child(5) { animation-delay: 0.6s; }
+.pre-vertex:nth-child(6) { animation-delay: 1.0s; }
+.pre-vertex:nth-child(7) { animation-delay: 1.4s; }
+.pre-vertex:nth-child(8) { animation-delay: 1.8s; }
+.pre-vertex:nth-child(9) { animation-delay: 2.2s; }
+
+/* Textos del preloader */
+.pre-brand {
+  font-family: 'Philosopher', serif;
+  font-size: 1.9rem; font-weight: 700; font-style: italic;
+  color: var(--bone); letter-spacing: 0.04em;
+  opacity: 0;
+  animation: fade-up 0.8s ease 1.8s forwards;
+}
+.pre-brand em { font-style: normal; color: var(--ember); }
+
+.pre-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem; letter-spacing: 0.5em;
+  text-transform: uppercase; color: var(--ash);
+  opacity: 0;
+  animation: fade-in 0.8s ease 2.2s forwards;
+}
+
+/* Puntos animados "..." */
+.pre-dots::after {
+  content: '';
+  animation: pre-ellipsis 1.5s steps(4, end) 2.5s infinite;
+}
+@keyframes pre-ellipsis {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+  100% { content: ''; }
+}
+
+/* Keyframes del preloader */
+@keyframes pre-spin     { to { transform: rotate(360deg); } }
+@keyframes pre-spin-rev { to { transform: rotate(-360deg); } }
+@keyframes pre-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes pre-glow-star {
+  0%,100% { filter: drop-shadow(0 0 4px rgba(255,106,16,0.5)); }
+  50%     { filter: drop-shadow(0 0 12px rgba(255,106,16,0.9)); }
+}
+@keyframes pre-dot-appear {
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Ocultar cursor en preloader */
+#preloader * { cursor: none; }

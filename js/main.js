@@ -6,7 +6,6 @@
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => root.querySelectorAll(sel);
 
-/** RAF-throttle: ejecuta fn como máximo una vez por frame. */
 function rafThrottle(fn) {
   let pending = false;
   return (...args) => {
@@ -21,21 +20,18 @@ function rafThrottle(fn) {
   const loader = document.getElementById('preloader');
   if (!loader) return;
 
-  // Mínimo visual: al menos 2.8 s para que se vea la animación completa
-  const MIN_MS   = 2800;
-  const start    = Date.now();
+  const MIN_MS = 2800; // mínimo para ver la animación completa
+  const start  = Date.now();
 
   function dismiss() {
     const elapsed = Date.now() - start;
     const delay   = Math.max(0, MIN_MS - elapsed);
     setTimeout(() => {
       loader.classList.add('hidden');
-      // Eliminar del DOM tras la transición para no bloquear eventos
       loader.addEventListener('transitionend', () => loader.remove(), { once: true });
     }, delay);
   }
 
-  // Esperar a que carguen todos los recursos
   if (document.readyState === 'complete') {
     dismiss();
   } else {

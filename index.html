@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════════
      PRELOADER — PENTAGRAMA
      ══════════════════════════════════════════════════════════ -->
 <div id="preloader" aria-hidden="true">
@@ -54,6 +54,12 @@
 
 <!-- ── PARTICLES ───────────────────────────────────────────── -->
 <div class="particles" id="particles"></div>
+<!-- ── CURSOR ──────────────────────────────────────────────── -->
+<div class="cursor"      id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── PARTICLES ───────────────────────────────────────────── -->
+<div class="particles" id="particles"></div>
 
 <!-- ══════════════════════════════════════════════════════════
      NAVIGATION
@@ -63,6 +69,8 @@
     <img src="media\logo.png" alt="Fuego Fatuo" class="nav-logo-img">
     Fuego <span>Fatuo</span>
   </a>
+
+  
 
   <ul class="nav-links">
     <li><a href="#sobre-mi">Los Brujos</a></li>
@@ -81,6 +89,9 @@
 <!-- Mobile Drawer -->
 <div class="nav-overlay" id="navOverlay"></div>
 <nav class="nav-drawer" id="navDrawer">
+  <button class="nav-drawer-close" id="navDrawerClose" aria-label="Cerrar menú">
+    <i class="fas fa-times"></i>
+  </button>
   <a href="#sobre-mi">Los Brujos</a>
   <a href="#servicios">Rituales</a>
   <a href="#portafolio">Portafolio</a>
@@ -171,7 +182,11 @@
 
   <!-- ── BRUJO 1 ──────────────────────────────────────────── -->
   <div class="brujo-block reveal">
-    <div class="brujo-image-wrap">
+    <div class="brujo-image-wrap brujo-image-clickable"
+         data-img="media\zannian.jpg"
+         data-name="Marqués Zaninas"
+         data-role="Pitóniso"
+         role="button" tabindex="0" aria-label="Ver foto de Marqués Zaninas">
       <!--
         FOTO BRUJO 1 → cambia el src por la ruta de tu imagen.
         Ejemplo: src="media/brujo1.jpg"
@@ -236,7 +251,11 @@
 
   <!-- ── BRUJO 2 ──────────────────────────────────────────── -->
   <div class="brujo-block brujo-block--reversed reveal reveal-delay-1">
-    <div class="brujo-image-wrap">
+    <div class="brujo-image-wrap brujo-image-clickable"
+         data-img=""
+         data-name="Segundo Brujo"
+         data-role="Brujo"
+         role="button" tabindex="0" aria-label="Ver foto del Segundo Brujo">
       <!--
         FOTO BRUJO 2 → cambia el src por la ruta de tu imagen.
         Ejemplo: src="media/brujo2.jpg"
@@ -675,6 +694,19 @@
 </a>
 
 <!-- ── SCRIPTS ──────────────────────────────────────────────── -->
+<!-- LIGHTBOX BRUJOS -->
+<div class="brujo-lightbox" id="brujoLightbox" aria-hidden="true" role="dialog">
+  <button class="brujo-lb-close" id="brujoLbClose" aria-label="Cerrar">
+    <i class="fas fa-times"></i>
+  </button>
+  <div class="brujo-lb-inner">
+    <img class="brujo-lb-img" id="brujoLbImg" src="" alt="">
+    <div class="brujo-lb-info">
+      <p class="brujo-lb-name" id="brujoLbName"></p>
+      <p class="brujo-lb-role" id="brujoLbRole"></p>
+    </div>
+  </div>
+</div>
 <script src="js/main.js"></script>
 </body>
 </html>
