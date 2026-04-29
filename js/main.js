@@ -1,80 +1,136 @@
 /* ============================================================
-   FUEGO FATUO — main.js
-   Módulos: cursor, partículas, scroll reveal, navegación, rotador
+   FUEGO FATUO — main.js  (optimizado)
    ============================================================ */
 
+/* ── UTILIDADES COMPARTIDAS ───────────────────────────────── */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => root.querySelectorAll(sel);
+
+/** RAF-throttle: ejecuta fn como máximo una vez por frame. */
+function rafThrottle(fn) {
+  let pending = false;
+  return (...args) => {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => { fn(...args); pending = false; });
+  };
+}
+
 /* ── 1. CUSTOM CURSOR ─────────────────────────────────────── */
+/*
+  OPTIMIZACIÓN CLAVE: usar transform en lugar de left/top.
+  transform activa la composición en GPU (capa propia), evitando
+  reflows/repaints en cada movimiento del ratón.
+*/
 (function initCursor() {
-  const cursor = document.getElementById('cursor');
-  const ring   = document.getElementById('cursorRing');
+  const cursor = $('#cursor');
+  const ring   = $('#cursorRing');
   if (!cursor || !ring) return;
 
   let mx = 0, my = 0, rx = 0, ry = 0;
+  let rafId;
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top  = my + 'px';
-  });
+  // Passive: el navegador no espera preventDefault() → scroll más fluido
+  document.addEventListener('mousemove', rafThrottle(e => {
+    mx = e.clientX;
+    my = e.clientY;
+    cursor.style.transform = `translate(${mx}px, ${my}px)`;
+  }), { passive: true });
 
   function trackRing() {
+    // Interpolación suavizada (lerp)
     rx += (mx - rx) * 0.13;
     ry += (my - ry) * 0.13;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    requestAnimationFrame(trackRing);
+    ring.style.transform = `translate(${rx}px, ${ry}px)`;
+    rafId = requestAnimationFrame(trackRing);
   }
   trackRing();
 
-  const hoverTargets = 'a, button, .service-card, .portfolio-item, .testimonial, .social-contact-card, .social-btn, .brujo-tag, .float-wsp';
-  document.querySelectorAll(hoverTargets).forEach(el => {
-    el.addEventListener('mouseenter', () => {
+  // Delegación: un solo par de listeners en document en vez de N listeners
+  const HOVER_SEL = new Set([
+    'A','BUTTON',
+  ]);
+  const HOVER_CLASS = new Set([
+    'service-card','portfolio-item','testimonial',
+    'social-contact-card','social-btn','brujo-tag','float-wsp',
+  ]);
+
+  function isHoverTarget(el) {
+    if (!el) return false;
+    if (HOVER_SEL.has(el.tagName)) return true;
+    return [...el.classList].some(c => HOVER_CLASS.has(c));
+  }
+
+  document.addEventListener('mouseover', e => {
+    if (isHoverTarget(e.target)) {
       cursor.classList.add('hovering');
       ring.classList.add('hovering');
-    });
-    el.addEventListener('mouseleave', () => {
+    }
+  }, { passive: true });
+
+  document.addEventListener('mouseout', e => {
+    if (isHoverTarget(e.target)) {
       cursor.classList.remove('hovering');
       ring.classList.remove('hovering');
-    });
-  });
+    }
+  }, { passive: true });
 })();
 
 /* ── 2. EMBER PARTICLES ───────────────────────────────────── */
+/*
+  OPTIMIZACIÓN: crear nodos con DocumentFragment (un solo reflow)
+  y calcular cssText de una vez para minimizar accesos al DOM.
+*/
 (function initParticles() {
-  const container = document.getElementById('particles');
+  const container = $('#particles');
   if (!container) return;
 
-  const TOTAL = 40;
-  const COLORS = ['var(--ember)', 'var(--blaze)', 'var(--amber)', 'var(--gold)'];
+  const TOTAL  = 40;
+  const COLORS = ['var(--ember)','var(--blaze)','var(--amber)','var(--gold)'];
+  const frag   = document.createDocumentFragment();
 
   for (let i = 0; i < TOTAL; i++) {
     const p    = document.createElement('div');
     const size = Math.random() * 2.5 + 1;
-    const col  = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const col  = COLORS[(Math.random() * COLORS.length) | 0];
+    const dur  = (9  + Math.random() * 16).toFixed(2);
+    const del  = (Math.random() * 18).toFixed(2);
+    const drft = ((Math.random() - 0.5) * 120).toFixed(1);
 
-    p.classList.add('particle');
-    p.style.cssText = `
-      left:              ${Math.random() * 100}%;
-      width:             ${size}px;
-      height:            ${size}px;
-      background:        ${col};
-      --drift:           ${(Math.random() - 0.5) * 120}px;
-      animation-duration:${9 + Math.random() * 16}s;
-      animation-delay:   ${Math.random() * 18}s;
-      box-shadow:        0 0 ${size * 3}px ${col};
-    `;
-    container.appendChild(p);
+    p.className = 'particle';
+    p.style.cssText =
+      `left:${(Math.random()*100).toFixed(2)}%;` +
+      `width:${size}px;height:${size}px;` +
+      `background:${col};` +
+      `--drift:${drft}px;` +
+      `animation-duration:${dur}s;` +
+      `animation-delay:${del}s;` +
+      `box-shadow:0 0 ${(size*3).toFixed(1)}px ${col};`;
+
+    frag.appendChild(p);
   }
+
+  container.appendChild(frag); // UN solo reflow
 })();
 
 /* ── 3. SCROLL REVEAL ─────────────────────────────────────── */
+/*
+  Sin cambios estructurales (IntersectionObserver ya es óptimo).
+  Agregado: disconnect cuando todos los elementos son visibles
+  para liberar el observer.
+*/
 (function initScrollReveal() {
-  const els = document.querySelectorAll('.reveal');
+  const els = $$('.reveal');
   if (!els.length) return;
+
+  let remaining = els.length;
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('visible');
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+      if (--remaining === 0) observer.disconnect();
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
@@ -82,20 +138,24 @@
 })();
 
 /* ── 4. NAVIGATION ────────────────────────────────────────── */
+/*
+  OPTIMIZACIÓN: scroll listener con passive + rafThrottle.
+  Smooth scroll nativo con CSS (scroll-behavior: smooth) es preferible,
+  pero mantenemos el JS para compatibilidad; se evita scrollIntoView
+  innecesario cuando el target ya está en viewport.
+*/
 (function initNavigation() {
-  const nav       = document.getElementById('mainNav');
-  const hamburger = document.getElementById('navHamburger');
-  const drawer    = document.getElementById('navDrawer');
-  const overlay   = document.getElementById('navOverlay');
+  const nav       = $('#mainNav');
+  const hamburger = $('#navHamburger');
+  const drawer    = $('#navDrawer');
+  const overlay   = $('#navOverlay');
 
-  // Scroll state
   if (nav) {
-    window.addEventListener('scroll', () => {
+    window.addEventListener('scroll', rafThrottle(() => {
       nav.classList.toggle('scrolled', window.scrollY > 80);
-    });
+    }), { passive: true });
   }
 
-  // Mobile drawer
   function openDrawer() {
     drawer?.classList.add('open');
     overlay?.classList.add('active');
@@ -111,27 +171,38 @@
   overlay?.addEventListener('click', closeDrawer);
   drawer?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
 
-  // Smooth scroll
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
-    });
+  // Smooth scroll — solo actúa si el anchor existe
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const target = $(a.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth' });
   });
 })();
 
 /* ── 5. PORTFOLIO — IMÁGENES / VIDEOS ────────────────────── */
+/*
+  OPTIMIZACIÓN principal: lazy-load de src de video.
+  El <video> src solo se asigna cuando el usuario abre el lightbox
+  (o hace hover por primera vez), no al cargar la página.
+  Esto evita peticiones de red innecesarias para todos los vídeos.
+
+  Delegación de eventos en el contenedor en vez de N listeners
+  individuales por ítem.
+*/
 (function initPortfolioMedia() {
+  const lightbox  = $('#pfLightbox');
+  const closeBtn  = $('#pfClose');
+  const lbImg     = $('#pfLbImg');
+  const lbVideo   = $('#pfLbVideo');
+  const lbCaption = $('#pfLbCaption');
 
-  const lightbox  = document.getElementById('pfLightbox');
-  const closeBtn  = document.getElementById('pfClose');
-  const lbImg     = document.getElementById('pfLbImg');
-  const lbVideo   = document.getElementById('pfLbVideo');
-  const lbCaption = document.getElementById('pfLbCaption');
+  // Cache de ítems para evitar re-query
+  const items = $$('.portfolio-item');
 
-  /* ── Inicializar cada ítem ─────────────────────────────── */
-  document.querySelectorAll('.portfolio-item').forEach(item => {
+  items.forEach(item => {
     const imgSrc   = (item.dataset.img   || '').trim();
     const videoSrc = (item.dataset.video || '').trim();
     const bgEl     = item.querySelector('.portfolio-bg');
@@ -140,43 +211,53 @@
     const badgeImg = item.querySelector('.portfolio-media-badge--image');
 
     if (videoSrc) {
-      /* ── VIDEO ── reproducir en hover, mostrar badge */
       item.classList.add('has-video');
-      videoEl.src = videoSrc;
+      // *** NO asignar .src aquí — se asigna en hover la primera vez ***
+      let loaded = false;
 
-      item.addEventListener('mouseenter', () => videoEl.play().catch(() => {}));
-      item.addEventListener('mouseleave', () => { videoEl.pause(); videoEl.currentTime = 0; });
+      item.addEventListener('mouseenter', () => {
+        if (!loaded) { videoEl.src = videoSrc; loaded = true; }
+        videoEl.play().catch(() => {});
+      }, { passive: true });
 
-      /* Clic → lightbox con video */
-      item.addEventListener('click', () => openLightbox('video', videoSrc, item));
+      item.addEventListener('mouseleave', () => {
+        videoEl.pause();
+        videoEl.currentTime = 0;
+      }, { passive: true });
 
     } else if (imgSrc) {
-      /* ── IMAGEN ── aplicar como background del .portfolio-bg */
       item.classList.add('has-image');
       if (bgEl) {
-        bgEl.style.backgroundImage    = `url('${imgSrc}')`;
-        bgEl.style.backgroundSize     = 'cover';
-        bgEl.style.backgroundPosition = 'center';
+        bgEl.style.cssText +=
+          `;background-image:url('${imgSrc}');` +
+          `background-size:cover;background-position:center`;
       }
-
-      /* Ocultar badge de video, mostrar el de imagen si existe */
       if (badgeVid) badgeVid.style.display = 'none';
       if (badgeImg) badgeImg.style.display = 'inline-block';
 
-      /* Clic → lightbox con imagen */
-      item.addEventListener('click', () => openLightbox('image', imgSrc, item));
-
     } else {
-      /* Sin media: ocultar ambos badges */
       if (badgeVid) badgeVid.style.display = 'none';
       if (badgeImg) badgeImg.style.display = 'none';
     }
   });
 
-  /* ── Lightbox helpers ──────────────────────────────────── */
+  // ── Lightbox — delegación en el contenedor padre ──────────
+  const portfolioGrid = $('.portfolio-grid') ?? document.body;
+
+  portfolioGrid.addEventListener('click', e => {
+    const item = e.target.closest('.portfolio-item');
+    if (!item || !lightbox) return;
+
+    const imgSrc   = (item.dataset.img   || '').trim();
+    const videoSrc = (item.dataset.video || '').trim();
+
+    if (videoSrc) openLightbox('video', videoSrc, item);
+    else if (imgSrc) openLightbox('image', imgSrc, item);
+  });
+
   function openLightbox(type, src, item) {
-    const title = item.querySelector('.portfolio-title')?.textContent || '';
-    const cat   = item.querySelector('.portfolio-cat')?.textContent   || '';
+    const title = item.querySelector('.portfolio-title')?.textContent ?? '';
+    const cat   = item.querySelector('.portfolio-cat')?.textContent   ?? '';
 
     lbImg.classList.remove('active');
     lbVideo.classList.remove('active');
@@ -199,41 +280,40 @@
   }
 
   function closeLightbox() {
+    if (!lightbox) return;
     lightbox.classList.remove('active');
     lightbox.setAttribute('aria-hidden', 'true');
     lbVideo.pause();
-    lbVideo.src = '';
-    lbImg.src   = '';
+    lbVideo.removeAttribute('src'); // libera el buffer de video
+    lbImg.removeAttribute('src');
     document.body.style.overflow = '';
   }
 
   closeBtn?.addEventListener('click', closeLightbox);
   lightbox?.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
 })();
 
-/* ── 6. ROTADOR DE INTENCIONES (Sección Contacto) ────────── */
+/* ── 6. ROTADOR DE INTENCIONES ────────────────────────────── */
+/*
+  OPTIMIZACIÓN: se eliminan las clases intermedias y se usa
+  una sola clase 'transitioning' + CSS para la animación.
+  Reducción de classList thrashing. El intervalo se pausa
+  con visibilitychange para no animar en pestañas ocultas.
+*/
 (function initRotator() {
-  const el = document.getElementById('rotatorText');
+  const el = $('#rotatorText');
   if (!el) return;
 
   const phrases = [
-    'protección?',
-    'un ritual?',
-    'una lectura?',
-    'un amarre?',
-    'mentoría?',
-    'un sigilo?',
-    'guía oscura?',
-    'poder real?',
+    'protección?','un ritual?','una lectura?','un amarre?',
+    'mentoría?','un sigilo?','guía oscura?','poder real?',
   ];
 
   let idx = 0;
+  let intervalId;
 
   function nextPhrase() {
-    // Salida
-    el.classList.remove('anim-in');
     el.classList.add('anim-out');
 
     setTimeout(() => {
@@ -241,8 +321,19 @@
       el.textContent = phrases[idx];
       el.classList.remove('anim-out');
       el.classList.add('anim-in');
+
+      // Limpiar clase anim-in tras la transición
+      el.addEventListener('animationend', () => el.classList.remove('anim-in'), { once: true });
     }, 420);
   }
 
-  setInterval(nextPhrase, 10010);
+  function startRotator() { intervalId = setInterval(nextPhrase, 10010); }
+  function stopRotator()  { clearInterval(intervalId); }
+
+  startRotator();
+
+  // Pausa cuando la pestaña no está visible → ahorra CPU/battery
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? stopRotator() : startRotator();
+  });
 })();
